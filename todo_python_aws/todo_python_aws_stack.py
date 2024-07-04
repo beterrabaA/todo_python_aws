@@ -29,6 +29,7 @@ class TodoPythonAwsStack(Stack):
             sort_key=_dynamo.Attribute(name="created_time",type=_dynamo.AttributeType.NUMBER)
             )
 
+        """----------lambda functions----------"""
         hello_fn = lambda_.Function(
             self,
             'helloWorldfn',
@@ -48,6 +49,7 @@ class TodoPythonAwsStack(Stack):
             handler="task.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
+        """----------lambda functions----------"""
 
         """----------database permissions----------"""
         task_table.grant_read_data(read_task_fn)
@@ -67,6 +69,7 @@ class TodoPythonAwsStack(Stack):
             )
         )
 
+        """----------gateway routes----------"""
         http_todo_api.add_routes(
             path='/',
             methods=[_apigw.HttpMethod.GET],
@@ -78,7 +81,8 @@ class TodoPythonAwsStack(Stack):
             methods=[_apigw.HttpMethod.GET],
             integration=_integration.HttpLambdaIntegration('ReadTaskInt', handler=read_task_fn)
         )
-
+        """----------gateway routes----------"""
+        
         CfnOutput(
             self,
             'Todo Api Endpoints',
