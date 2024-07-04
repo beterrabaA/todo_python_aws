@@ -49,6 +49,10 @@ class TodoPythonAwsStack(Stack):
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
 
+        """----------database permissions----------"""
+        task_table.grant_read_data(read_task_fn)
+        """----------database permissions----------"""
+
         http_todo_api = _apigw.HttpApi(
             self,
             'TodoHttpApi',
@@ -67,6 +71,12 @@ class TodoPythonAwsStack(Stack):
             path='/',
             methods=[_apigw.HttpMethod.GET],
             integration=_integration.HttpLambdaIntegration('LambdaHelloInt', handler=hello_fn)
+        )
+
+        http_todo_api.add_routes(
+            path='/task/{task_id}',
+            methods=[_apigw.HttpMethod.GET],
+            integration=_integration.HttpLambdaIntegration('ReadTaskInt', handler=read_task_fn)
         )
 
         CfnOutput(
