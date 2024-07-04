@@ -43,5 +43,9 @@ class TodoPythonAwsStack(Stack):
             integration=_integration.HttpLambdaIntegration('LambdaHelloInt', handler=hello_fn)
         )
 
-
+        CfnOutput(
+            self,
+            'Todo Api Endpoints',
+            description='endpoints from todo api',
+            value=http_todo_api.api_endpoint)
 
