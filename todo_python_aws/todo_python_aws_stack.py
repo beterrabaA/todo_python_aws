@@ -63,6 +63,7 @@ class TodoPythonAwsStack(Stack):
 
         """----------database permissions----------"""
         task_table.grant_read_data(read_task_fn)
+        task_table.grant_read_data(read_all_tasks_fn)
         """----------database permissions----------"""
 
         http_todo_api = _apigw.HttpApi(
