@@ -17,20 +17,25 @@ class TodoPythonAwsStack(Stack):
         task_table = _dynamo.Table(
             self,
             'Tasks',
-            partition_key=_dynamo.Attribute(name='task_id',type=_dynamo.AttributeType.STRING),
-            sort_key=_dynamo.Attribute(name="created_time",type=_dynamo.AttributeType.NUMBER),
-            table_name='todo_tasks',
             billing_mode=_dynamo.BillingMode.PAY_PER_REQUEST,
+            partition_key=_dynamo.Attribute(name='task_id',type=_dynamo.AttributeType.STRING),
+            table_name='todo_tasks',
             time_to_live_attribute='ttl'
+            )
+        
+        task_table.add_global_secondary_index(
+            index_name='user-index',
+            partition_key=_dynamo.Attribute(name='user_id',type=_dynamo.AttributeType.STRING),
+            sort_key=_dynamo.Attribute(name="created_time",type=_dynamo.AttributeType.NUMBER)
             )
 
         hello_fn = lambda_.Function(
             self,
             'HelloWorldfn',
             code=lambda_.Code.from_asset('./lambdas'),
-            handler="hello.handler",
-            function_name='hello_world_function',
             description='function to return hello message',
+            function_name='hello_world_function',
+            handler="hello.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
 
