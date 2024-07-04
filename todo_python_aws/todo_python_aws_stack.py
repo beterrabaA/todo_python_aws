@@ -60,7 +60,7 @@ class TodoPythonAwsStack(Stack):
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
 
-        create_task = lambda_.Function(
+        create_task_fn = lambda_.Function(
             self,
             'createTaskfn',
             code=lambda_.Code.from_asset('./lambdas'),
@@ -69,12 +69,22 @@ class TodoPythonAwsStack(Stack):
             handler="create_task.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
+
+        update_task_fn = lambda_.Function(
+            self,
+            'updateTaskfn',
+            code=lambda_.Code.from_asset('./lambdas'),
+            description='function to update task using task ID',
+            function_name='update_task_function',
+            handler="update_task.handler",
+            runtime=lambda_.Runtime.PYTHON_3_12,
+        )
         """----------lambda functions----------"""
 
         """----------database permissions----------"""
         task_table.grant_read_data(read_task_fn)
         task_table.grant_read_data(read_all_tasks_fn)
-        task_table.grant_write_data(create_task)
+        task_table.grant_write_data(create_task_fn)
         """----------database permissions----------"""
 
         http_todo_api = _apigw.HttpApi(
@@ -113,7 +123,7 @@ class TodoPythonAwsStack(Stack):
         http_todo_api.add_routes(
             path='/create_task',
             methods=[_apigw.HttpMethod.POST],
-            integration=_integration.HttpLambdaIntegration('CreateTaskInt', handler=create_task)
+            integration=_integration.HttpLambdaIntegration('CreateTaskInt', handler=create_task_fn)
         )
         """----------gateway routes----------"""
 
