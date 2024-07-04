@@ -23,7 +23,7 @@ class TodoPythonAwsStack(Stack):
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
 
-        http_api = _apigw.HttpApi(
+        http_todo_api = _apigw.HttpApi(
             self,
             'TodoHttpApi',
             cors_preflight=_apigw.CorsPreflightOptions(
@@ -36,4 +36,12 @@ class TodoPythonAwsStack(Stack):
                 allow_origins=['*'],
             )
         )
+
+        http_todo_api.add_routes(
+            path='/',
+            methods=[_apigw.HttpMethod.GET],
+            integration=_integration.HttpLambdaIntegration('LambdaHelloInt', handler=hello_fn)
+        )
+
+
 
