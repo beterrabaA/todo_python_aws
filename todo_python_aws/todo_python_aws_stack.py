@@ -49,6 +49,16 @@ class TodoPythonAwsStack(Stack):
             handler="task.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
+
+        read_all_tasks_fn = lambda_.Function(
+            self,
+            'readAllTaskfn',
+            code=lambda_.Code.from_asset('./lambdas'),
+            description='function to retrieve all tasks by user ID',
+            function_name='read_all_tasks_function',
+            handler="list_tasks.handler",
+            runtime=lambda_.Runtime.PYTHON_3_12,
+        )
         """----------lambda functions----------"""
 
         """----------database permissions----------"""
@@ -82,7 +92,7 @@ class TodoPythonAwsStack(Stack):
             integration=_integration.HttpLambdaIntegration('ReadTaskInt', handler=read_task_fn)
         )
         """----------gateway routes----------"""
-        
+
         CfnOutput(
             self,
             'Todo Api Endpoints',
