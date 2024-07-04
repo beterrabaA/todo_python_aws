@@ -45,6 +45,9 @@ class TodoPythonAwsStack(Stack):
             'readTaskfn',
             code=lambda_.Code.from_asset('./lambdas'),
             description='function to get task by id',
+            environment={
+                'TABLE_NAME':task_table.table_name
+            },
             function_name='read_task_function',
             handler="task.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
@@ -55,9 +58,13 @@ class TodoPythonAwsStack(Stack):
             'readAllTaskfn',
             code=lambda_.Code.from_asset('./lambdas'),
             description='function to retrieve all tasks by user ID',
+            environment={
+                'TABLE_NAME':task_table.table_name
+            },
             function_name='read_all_tasks_function',
             handler="list_tasks.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
+            
         )
 
         create_task_fn = lambda_.Function(
@@ -65,6 +72,9 @@ class TodoPythonAwsStack(Stack):
             'createTaskfn',
             code=lambda_.Code.from_asset('./lambdas'),
             description='function to create a new task',
+            environment={
+                'TABLE_NAME':task_table.table_name
+            },
             function_name='create_task_function',
             handler="create_task.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
@@ -75,6 +85,9 @@ class TodoPythonAwsStack(Stack):
             'updateTaskfn',
             code=lambda_.Code.from_asset('./lambdas'),
             description='function to update task using task ID',
+            environment={
+                'TABLE_NAME':task_table.table_name
+            },
             function_name='update_task_function',
             handler="update_task.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
@@ -85,6 +98,9 @@ class TodoPythonAwsStack(Stack):
             'deleteTaskfn',
             code=lambda_.Code.from_asset('./lambdas'),
             description='function to delete task',
+            environment={
+                'TABLE_NAME':task_table.table_name
+            },
             function_name='delete_task_function',
             handler="delete_task.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
