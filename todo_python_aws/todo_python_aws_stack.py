@@ -27,7 +27,12 @@ class TodoPythonAwsStack(Stack):
             self,
             'TodoHttpApi',
             cors_preflight=_apigw.CorsPreflightOptions(
-                allow_methods=[_apigw.CorsHttpMethod.GET],
+                allow_methods=[
+                    _apigw.CorsHttpMethod.GET,
+                    _apigw.CorsHttpMethod.POST,
+                    _apigw.CorsHttpMethod.PUT,
+                    _apigw.CorsHttpMethod.DELETE
+                    ],
                 allow_origins=['*'],
             )
         )
