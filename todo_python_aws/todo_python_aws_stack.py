@@ -31,11 +31,21 @@ class TodoPythonAwsStack(Stack):
 
         hello_fn = lambda_.Function(
             self,
-            'HelloWorldfn',
+            'helloWorldfn',
             code=lambda_.Code.from_asset('./lambdas'),
             description='function to return hello message',
             function_name='hello_world_function',
             handler="hello.handler",
+            runtime=lambda_.Runtime.PYTHON_3_12,
+        )
+
+        read_task_fn = lambda_.Function(
+            self,
+            'readTaskfn',
+            code=lambda_.Code.from_asset('./lambdas'),
+            description='function to get task by id',
+            function_name='read_task_function',
+            handler="task.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
 
