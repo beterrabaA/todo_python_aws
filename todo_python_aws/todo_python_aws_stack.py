@@ -1,19 +1,24 @@
 from aws_cdk import (
-    # Duration,
-    Stack,
-    # aws_sqs as sqs,
+    CfnOutput,
+    aws_lambda as lambda_,
+    aws_apigatewayv2 as _apigw,
+    aws_apigatewayv2_integrations as _integration,
+    Stack
 )
 from constructs import Construct
+
 
 class TodoPythonAwsStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # The code that defines your stack goes here
-
-        # example resource
-        # queue = sqs.Queue(
-        #     self, "TodoPythonAwsQueue",
-        #     visibility_timeout=Duration.seconds(300),
-        # )
+        hello_fn = lambda_.Function(
+            self,
+            'HelloWorldfn',
+            code=lambda_.Code.from_asset('./lambdas'),
+            handler="hello.handler",
+            function_name='hello_world_function',
+            description='function to return hello message',
+            runtime=lambda_.Runtime.PYTHON_3_12,
+        )
