@@ -22,3 +22,13 @@ class TodoPythonAwsStack(Stack):
             description='function to return hello message',
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
+
+        http_api = _apigw.HttpApi(
+            self,
+            'TodoHttpApi',
+            cors_preflight=_apigw.CorsPreflightOptions(
+                allow_methods=[_apigw.CorsHttpMethod.GET],
+                allow_origins=['*'],
+            )
+        )
+
