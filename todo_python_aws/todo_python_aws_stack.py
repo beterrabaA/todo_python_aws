@@ -79,6 +79,16 @@ class TodoPythonAwsStack(Stack):
             handler="update_task.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
+
+        delete_task_fn = lambda_.Function(
+            self,
+            'deleteTaskfn',
+            code=lambda_.Code.from_asset('./lambdas'),
+            description='function to delete task',
+            function_name='delete_task_function',
+            handler="delete_task.handler",
+            runtime=lambda_.Runtime.PYTHON_3_12,
+        )
         """----------lambda functions----------"""
 
         """----------database permissions----------"""
