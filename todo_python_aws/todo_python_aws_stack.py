@@ -59,6 +59,16 @@ class TodoPythonAwsStack(Stack):
             handler="list_tasks.handler",
             runtime=lambda_.Runtime.PYTHON_3_12,
         )
+
+        create_task = lambda_.Function(
+            self,
+            'createTaskfn',
+            code=lambda_.Code.from_asset('./lambdas'),
+            description='function to create a new task',
+            function_name='create_task_function',
+            handler="create_task.handler",
+            runtime=lambda_.Runtime.PYTHON_3_12,
+        )
         """----------lambda functions----------"""
 
         """----------database permissions----------"""
