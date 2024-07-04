@@ -92,6 +92,12 @@ class TodoPythonAwsStack(Stack):
             methods=[_apigw.HttpMethod.GET],
             integration=_integration.HttpLambdaIntegration('ReadTaskInt', handler=read_task_fn)
         )
+
+        http_todo_api.add_routes(
+            path='/list_tasks/{user_id}',
+            methods=[_apigw.HttpMethod.GET],
+            integration=_integration.HttpLambdaIntegration('ReadAllTaskInt', handler=read_all_tasks_fn)
+        )
         """----------gateway routes----------"""
 
         CfnOutput(
